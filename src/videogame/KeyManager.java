@@ -18,6 +18,7 @@ public class KeyManager implements KeyListener {
     public boolean p;    // flag to move up and right the player
     public boolean a;    // flag to move donw and left the player
     public boolean l;   // flag to move down and right the player
+    public boolean space; //flag to pause
     private boolean keys[];  // to store all the flags for every key
     
     public KeyManager() {
@@ -38,6 +39,9 @@ public class KeyManager implements KeyListener {
     public void keyReleased(KeyEvent e) {
         // set false to every key released
         keys[e.getKeyCode()] = false;
+         if (e.getKeyCode() == KeyEvent.VK_SPACE){
+            space = !space;
+            }
     }
     
     /**
