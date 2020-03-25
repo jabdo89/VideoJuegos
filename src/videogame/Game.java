@@ -171,7 +171,7 @@ public class Game implements Runnable {
     private void tick() {
          // ticks keyMangaer
          keyManager.tick();
-        if (lives > 0 && !keyManager.space) {
+        if (lives > 0 && !keyManager.p) {
 
             // avancing player with colision
             player.tick();

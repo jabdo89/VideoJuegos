@@ -14,11 +14,11 @@ import java.awt.event.KeyListener;
  */
 public class KeyManager implements KeyListener {
     
-    public boolean q;      // flag to move up and left the player
-    public boolean p;    // flag to move up and right the player
-    public boolean a;    // flag to move donw and left the player
-    public boolean l;   // flag to move down and right the player
-    public boolean space; //flag to pause
+    public boolean up;      // flag to move up the player
+    public boolean right;    // flag to move right the player
+    public boolean left;    // flag to move left the player
+    public boolean down;   // flag to move down the player
+    public boolean p; //flag to pause
     private boolean keys[];  // to store all the flags for every key
     
     public KeyManager() {
@@ -39,8 +39,8 @@ public class KeyManager implements KeyListener {
     public void keyReleased(KeyEvent e) {
         // set false to every key released
         keys[e.getKeyCode()] = false;
-         if (e.getKeyCode() == KeyEvent.VK_SPACE){
-            space = !space;
+         if (e.getKeyCode() == KeyEvent.VK_P){
+            p = !p;
             }
     }
     
@@ -48,9 +48,9 @@ public class KeyManager implements KeyListener {
      * to enable or disable moves on every tick
      */
     public void tick() {
-        q = keys[KeyEvent.VK_Q];
-        p = keys[KeyEvent.VK_P];
-        a = keys[KeyEvent.VK_A];
-        l = keys[KeyEvent.VK_L];
+        up = keys[KeyEvent.VK_UP];
+        right = keys[KeyEvent.VK_RIGHT];
+        left = keys[KeyEvent.VK_LEFT];
+        down = keys[KeyEvent.VK_DOWN];
     }
 }
