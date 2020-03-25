@@ -9,6 +9,11 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.util.LinkedList;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -26,6 +31,7 @@ public class Game implements Runnable {
     private boolean running;        // to set the game
     private Player player;          // to use a player
     private KeyManager keyManager;  // to manage the keyboard
+    private ReadandWrite readAndWrite; // to save and load
     private LinkedList<Enemy> lista; // to store a random amount of enemies
     private LinkedList<Helper> listaHelp; // to store a random amount of helpers
     private int score; // To keep track of the game score
@@ -167,10 +173,78 @@ public class Game implements Runnable {
     public void helperBeeb() {
         Assets.stomp.play();
     }
+    
+    public void save(){
+        try {
+            PrintWriter writer = new PrintWriter(new FileWriter("game"));
+            writer.println("" + lives + "/" + score);
+            writer.println("" + player.getX() + "/" + player.getY());
+            for (Enemy enemy : lista){
+                writer.println("" + enemy.getX() + "/" + enemy.getY());
+            }
+            
+            for (Helper helper : listaHelp){
+                writer.println("" + helper.getX() + "/" + helper.getY());
+            }
+            
+            writer.close();
+        } catch (IOException ioe) {
+            System.out.println("File Not found CALL 911");
+        }
+    }
+    
+    public void load(){
+        try {
+            FileReader file = new FileReader("game");
+            BufferedReader reader = new BufferedReader(file);
+            String line;
+            String datos[];
+            line = reader.readLine();
+            datos = line.split("/");
+            lives = Integer.parseInt(datos[0]);
+            score = Integer.parseInt(datos[1]);
+            line = reader.readLine();
+            datos = line.split("/");
+            int x = Integer.parseInt(datos[0]);
+            int y = Integer.parseInt(datos[1]);
+            player.setX(x);
+            player.setY(y);
+            System.out.println(Integer.parseInt(datos[0]));
+            for (Enemy enemy : lista){
+                line = reader.readLine();
+                datos = line.split("/");
+                x = Integer.parseInt(datos[0]);
+                y = Integer.parseInt(datos[1]);
+                enemy.setX(x);
+                enemy.setY(y);
+            }
+            
+            for (Helper helper : listaHelp){
+                line = reader.readLine();
+                datos = line.split("/");
+                helper.setX(Integer.parseInt(datos[0]));
+                helper.setY(Integer.parseInt(datos[1]));
+            }
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("File Not found CALL 911");
+        }
+    }
 
     private void tick() {
          // ticks keyMangaer
          keyManager.tick();
+         
+        if (keyManager.load){
+            keyManager.load = false;
+            load();
+        }
+        
+        if (keyManager.save){
+            keyManager.save = false;
+            save();
+                    
+        }
         if (lives > 0 && !keyManager.p) {
 
             // avancing player with colision
