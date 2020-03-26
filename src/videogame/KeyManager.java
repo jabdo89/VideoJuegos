@@ -41,14 +41,15 @@ public class KeyManager implements KeyListener {
     public void keyReleased(KeyEvent e) {
         // set false to every key released
         keys[e.getKeyCode()] = false;
+        // Checks if "P" was released and changes the variable to the opposite
          if (e.getKeyCode() == KeyEvent.VK_P){
             p = !p;
             }
-         
+         // Checks if "C" was released and changes the variable to true
          if (e.getKeyCode() == KeyEvent.VK_C){
             load = true;
             }
-         
+         // Checks if "G" was released and changes the variable to true
          if (e.getKeyCode() == KeyEvent.VK_G){
             save = true;
             }
