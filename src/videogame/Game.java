@@ -50,7 +50,7 @@ public class Game implements Runnable {
         this.width = width;
         this.height = height;
         this.score = 0;
-        this.lives = (int) (Math.random() * 3 +3);
+        this.lives = (int) (Math.random() * 3 + 3);
         running = false;
         keyManager = new KeyManager();
 
@@ -94,10 +94,10 @@ public class Game implements Runnable {
 
         player = new Player((getWidth() / 2) - 50, (getHeight() / 2) - 50, 1, 100, 100,
                 this);
-        
+
         // Gets a random number between 8 and 10
         int azar = (int) (Math.random() * 3 + 8);
-        
+
         // adds a random amount of enemies to the list
         for (int i = 0; i < azar; i++) {
             Enemy enemy = new Enemy((int) (Math.random() * getWidth()
@@ -173,44 +173,64 @@ public class Game implements Runnable {
     public void helperBeeb() {
         Assets.stomp.play();
     }
-    
-    public void save(){
+    // Saves the game in a text file
+    public void save() {
         try {
+            // Makes a txt file to save everything
             PrintWriter writer = new PrintWriter(new FileWriter("game"));
-            writer.println("" + lives + "/" + score);
+            
+            // Prints the lives, the score and the number of enemies hit on 
+            // the txt file
+            writer.println("" + lives + "/" + score + "/" + cont);
+            
+            // Prints the player's coordinates
             writer.println("" + player.getX() + "/" + player.getY());
-            for (Enemy enemy : lista){
+            
+            // Goes through all the enemies and prints their coordinates 
+            for (Enemy enemy : lista) {
                 writer.println("" + enemy.getX() + "/" + enemy.getY());
             }
-            
-            for (Helper helper : listaHelp){
+            // Goes through all the helpers and prints their coordinates
+            for (Helper helper : listaHelp) {
                 writer.println("" + helper.getX() + "/" + helper.getY());
             }
-            
+            //System prints that it has been saved
+            System.out.println("Saved");
+
             writer.close();
         } catch (IOException ioe) {
             System.out.println("File Not found CALL 911");
         }
     }
-    
-    public void load(){
+
+    public void load() {
         try {
+            // Creates the FileReader
             FileReader file = new FileReader("game");
+            // Creates the BufferedReader
             BufferedReader reader = new BufferedReader(file);
             String line;
             String datos[];
+            // Reads the first line of the file
             line = reader.readLine();
+            // Splits the line based on the "/"
             datos = line.split("/");
+            // Changes the value of lives
             lives = Integer.parseInt(datos[0]);
+            // Changes the value of score
             score = Integer.parseInt(datos[1]);
+            // Changes the value of cont
+            cont = Integer.parseInt(datos[2]);
+            // Reads the next line and divides it
             line = reader.readLine();
             datos = line.split("/");
+            // Saves and changes the player's coordinates
             int x = Integer.parseInt(datos[0]);
             int y = Integer.parseInt(datos[1]);
             player.setX(x);
             player.setY(y);
-            System.out.println(Integer.parseInt(datos[0]));
-            for (Enemy enemy : lista){
+            // Goes through all the enemies and changes their coordinates back
+            for (Enemy enemy : lista) {
                 line = reader.readLine();
                 datos = line.split("/");
                 x = Integer.parseInt(datos[0]);
@@ -218,8 +238,8 @@ public class Game implements Runnable {
                 enemy.setX(x);
                 enemy.setY(y);
             }
-            
-            for (Helper helper : listaHelp){
+            //Goes through all the helpers and changes their coordinates back
+            for (Helper helper : listaHelp) {
                 line = reader.readLine();
                 datos = line.split("/");
                 helper.setX(Integer.parseInt(datos[0]));
@@ -232,85 +252,100 @@ public class Game implements Runnable {
     }
 
     private void tick() {
-         // ticks keyMangaer
-         keyManager.tick();
-         
-        if (keyManager.load && hasSaved){
-            keyManager.load = false;
-            load();
-        }
-        
-        if (keyManager.save){
-            keyManager.save = false;
-            hasSaved = true;
-            save();
-                    
-        }
-        if (lives > 0 && !keyManager.p) {
+        // ticks keyMangaer
+        keyManager.tick();
 
-            // avancing player with colision
-            player.tick();
-
-            // for loop that ticks all enemies
-            for (Enemy enemy : lista) {
-                enemy.tick();
-                // reseting enemies that colision with the player
-                if ((player.collision(enemy))) {
-                    
-                    // resets the enemies X coordinate
-                    enemy.setX((int) (Math.random() * getWidth()
-                            + getWidth() + 100));
-                    
-                    // resets the enemies Y coordinate
-                    enemy.setY((int) (Math.random() * getHeight()));
-                    
-                    // adds 1 to cont 
-                    cont++;
-
-                    // plays bump sound
-                    enemyBeep();
-                }
-
-                // resets enemies that get to the edge of the screen
-                if ((enemy.getX() <= -30)) {
-                    // resets the X coordinate of the enemy
-                    enemy.setX((int) (Math.random() * getWidth()
-                            + getWidth() + 100));
-                    // resets the Y coordinate of the enemy
-                    enemy.setY((int) (Math.random() * getHeight()));
-                }
-                
-                // If player gets hit 5 times lower its lives by 1
-                if (cont == 5) {
-                    lives--;
-                    cont = 0;
-                }
+        if (lives > 0) {
+            // Checks if the game is paused and if it is it resets the saved
+            // and load variables because this cant be done while paused
+            if (keyManager.p){
+                keyManager.load = false;
+                keyManager.save = false;
             }
-            
-            // for loop that ticks all halpers
-            for (Helper helper : listaHelp) {
-                // ticks helpers
-                helper.tick();
-                // reseting helpers with colision
-                if ((player.collision(helper))) {
-                    // resets the helper's X coordinate
-                    helper.setX((int) (Math.random() * getWidth() + 100) * (-1));
-                    // resets the helper's Y coordinate
-                    helper.setY((int) (Math.random() * getHeight() - 100));
 
-                    // plays stomp sound
-                    helperBeeb();
-                    
-                    // adds 5 to the score
-                    score += 5;
+            // Checks if the game has been already saved in order to load
+            if (keyManager.load && hasSaved) {
+                // Changes the variable back to false
+                keyManager.load = false;
+                // Calls the load function
+                load();
+            }
+
+            if (keyManager.save) {
+                // Changes the variable back to false
+                keyManager.save = false;
+                // Sets hasSaved to true
+                hasSaved = true;
+                // Calls the save function
+                save();
+
+            }
+
+            if (!keyManager.p) {
+                // avancing player with colision
+                player.tick();
+
+                // for loop that ticks all enemies
+                for (Enemy enemy : lista) {
+                    enemy.tick();
+                    // reseting enemies that colision with the player
+                    if ((player.collision(enemy))) {
+
+                        // resets the enemies X coordinate
+                        enemy.setX((int) (Math.random() * getWidth()
+                                + getWidth() + 100));
+
+                        // resets the enemies Y coordinate
+                        enemy.setY((int) (Math.random() * getHeight()));
+
+                        // adds 1 to cont 
+                        cont++;
+
+                        // plays bump sound
+                        enemyBeep();
+                    }
+
+                    // resets enemies that get to the edge of the screen
+                    if ((enemy.getX() <= -30)) {
+                        // resets the X coordinate of the enemy
+                        enemy.setX((int) (Math.random() * getWidth()
+                                + getWidth() + 100));
+                        // resets the Y coordinate of the enemy
+                        enemy.setY((int) (Math.random() * getHeight()));
+                    }
+
+                    // If player gets hit 5 times lower its lives by 1
+                    if (cont == 5) {
+                        lives--;
+                        cont = 0;
+                    }
                 }
 
-                // resets helpers that get to the edge of the screen
-                if (helper.getX() + 60 >= this.getWidth()) {
-                    // resets the helper's X coordinate
-                    helper.setX((int) (Math.random() * getWidth() + 100) * (-1));
-                    // resets the helper's Y coordinate
-                    helper.setY((int) (Math.random() * getHeight() - 100));
+                // for loop that ticks all halpers
+                for (Helper helper : listaHelp) {
+                    // ticks helpers
+                    helper.tick();
+                    // reseting helpers with colision
+                    if ((player.collision(helper))) {
+                        // resets the helper's X coordinate
+                        helper.setX((int) (Math.random() * getWidth() + 100) * (-1));
+                        // resets the helper's Y coordinate
+                        helper.setY((int) (Math.random() * getHeight() - 100));
+
+                        // plays stomp sound
+                        helperBeeb();
+
+                        // adds 5 to the score
+                        score += 5;
+                    }
+
+                    // resets helpers that get to the edge of the screen
+                    if (helper.getX() + 60 >= this.getWidth()) {
+                        // resets the helper's X coordinate
+                        helper.setX((int) (Math.random() * getWidth() + 100) * (-1));
+                        // resets the helper's Y coordinate
+                        helper.setY((int) (Math.random() * getHeight() - 100));
+                    }
                 }
             }
         }

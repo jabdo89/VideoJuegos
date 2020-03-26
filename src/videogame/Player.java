@@ -98,19 +98,19 @@ public class Player extends Item{
         // moving player depending on flags
         if (game.getKeyManager().up) {
             setCurr(animationUp);
-           setY(getY() - 1);
+           setY(getY() - 3);
         }
         else if (game.getKeyManager().right) {
             setCurr(animationRight);
-           setX(getX() + 1);
+           setX(getX() + 3);
         }
         else if (game.getKeyManager().down) {
             setCurr(animationDown);
-           setY(getY() + 1);
+           setY(getY() + 3);
         }
         else if (game.getKeyManager().left) {
             setCurr(animationLeft);
-           setX(getX() - 1);
+           setX(getX() - 3);
         }else{
            setCurr(animationStill);
         }

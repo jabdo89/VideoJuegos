@@ -46,11 +46,11 @@ public class KeyManager implements KeyListener {
             }
          
          if (e.getKeyCode() == KeyEvent.VK_C){
-            load = !load;
+            load = true;
             }
          
          if (e.getKeyCode() == KeyEvent.VK_G){
-            save = !save;
+            save = true;
             }
     }
     
