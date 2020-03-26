@@ -17,6 +17,7 @@ public class Enemy extends Item{
     private int width;
     private int height;
     private Game game;
+    private Anmation animationUp;
     
     /**
      * Set the initial values to create the enemy
@@ -33,6 +34,8 @@ public class Enemy extends Item{
         this.width = width;
         this.height = height;
         this.game = game;
+        
+        this.animationUp = new Anmation(Assets.enemyOne,100);
     }
 
     /**
@@ -86,6 +89,7 @@ public class Enemy extends Item{
 
     @Override
     public void tick() {
+        this.animationUp.tick();
         // moving enemy along the X coordinate
         this.setX(this.getX() - (int) (Math.random() * 3 + 3));
         
@@ -103,6 +107,6 @@ public class Enemy extends Item{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.enemy, getX(), getY(), getWidth(), getHeight(), null);
+        g.drawImage(animationUp.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
     }
 }

@@ -21,6 +21,7 @@ public class Assets {
     public static BufferedImage playerLeft[];
     public static BufferedImage playerDown[];
     public static BufferedImage playerRight[];
+    public static BufferedImage enemyOne[];
     public static BufferedImage playerStill[];// to store the player image
     public static BufferedImage enemy;      // to store the enemy image
     public static BufferedImage helper;      // to store the helper image
@@ -48,6 +49,14 @@ public class Assets {
             playerDown[i] = spritesheet.crop(i * 65, 11, 50, 50);
             playerRight[i] = spritesheet.crop(i * 65, 140, 50, 50);
             playerStill[i] = spritesheet.crop(0, i * 65, 50, 60);
+        }
+        
+        sprites = ImageLoader.loadImage("/images/main3.png");
+        SpreadSheet spritesheetEnemy = new SpreadSheet(sprites);
+        enemyOne = new BufferedImage[4];
+        
+        for (int i =0; i < 4; i++){
+            enemyOne[i] = spritesheetEnemy.crop(i * 50, 100, 50, 50);
         }
         
         
