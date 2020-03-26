@@ -17,6 +17,7 @@ public class Helper extends Item{
     private int width;
     private int height;
     private Game game;
+    private Anmation animationUp;
     
     public Helper(int x, int y, int direction, int width, int height, Game game) {
         super(x, y, width, height);
@@ -24,6 +25,8 @@ public class Helper extends Item{
         this.width = width;
         this.height = height;
         this.game = game;
+        
+        this.animationUp = new Anmation(Assets.helperOne,100);
     }
 
     /**
@@ -76,6 +79,7 @@ public class Helper extends Item{
 
     @Override
     public void tick() {
+        this.animationUp.tick();
         // moving helper in the X axis
         this.setX(this.getX() + (int) (Math.random() * 3 + 1));
         
@@ -95,6 +99,6 @@ public class Helper extends Item{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.helper, getX(), getY(), getWidth(), getHeight(), null);
+        g.drawImage(animationUp.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
     }
 }

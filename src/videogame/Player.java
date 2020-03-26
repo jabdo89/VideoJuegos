@@ -94,21 +94,28 @@ public class Player extends Item{
 
     @Override
     public void tick() {
+        //tick for the current animation
         this.currAni.tick();
+        
         // moving player depending on flags
         if (game.getKeyManager().up) {
+            //Change Current animation to Up
             setCurr(animationUp);
            setY(getY() - 3);
         }
         else if (game.getKeyManager().right) {
-            setCurr(animationRight);
+           //Change Current animation to Right
+           setCurr(animationRight);
+           
            setX(getX() + 3);
         }
         else if (game.getKeyManager().down) {
+            //Change Current animation to Down
             setCurr(animationDown);
            setY(getY() + 3);
         }
         else if (game.getKeyManager().left) {
+            //Change Current animation to Left
             setCurr(animationLeft);
            setX(getX() - 3);
         }else{

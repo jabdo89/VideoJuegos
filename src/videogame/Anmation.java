@@ -20,8 +20,8 @@ public class Anmation {
     
     public Anmation(BufferedImage[] frames, int speed){
         this.frames = frames;
-        this.speed =speed;
-        index =0;
+        this.speed = speed;
+        index = 0;
         timer = 0;
         lastTime = System.currentTimeMillis();
     }
@@ -30,6 +30,7 @@ public class Anmation {
         return frames[index];
     }
     
+    //Timer that takes the run tim and add a delay to provide a speed per image change
     public void tick(){
         timer += System.currentTimeMillis() - lastTime;
         
