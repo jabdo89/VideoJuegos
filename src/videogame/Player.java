@@ -17,6 +17,13 @@ public class Player extends Item{
     private int width;
     private int height;
     private Game game;
+    private Anmation animationUp;
+    private Anmation animationDown;
+    private Anmation animationRight;
+    private Anmation animationLeft;
+    private Anmation animationStill;
+    private Anmation currAni;
+    
     
     public Player(int x, int y, int direction, int width, int height, Game game) {
         super(x, y, width, height);
@@ -24,6 +31,13 @@ public class Player extends Item{
         this.width = width;
         this.height = height;
         this.game = game;
+        
+        this.animationUp = new Anmation(Assets.playerUp,100);
+        this.animationDown = new Anmation(Assets.playerDown,100);
+        this.animationRight = new Anmation(Assets.playerRight,100);
+        this.animationLeft = new Anmation(Assets.playerLeft,100);
+        this.animationStill = new Anmation(Assets.playerStill,100);
+        this.currAni = this.animationStill;
     }
 
     /**
@@ -65,7 +79,10 @@ public class Player extends Item{
     public void setWidth(int width) {
         this.width = width;
     }
-
+    
+    public void setCurr(Anmation curr) {
+        this.currAni = curr;
+    }
     /**
      * Set height
      * @param height to modify
@@ -77,18 +94,25 @@ public class Player extends Item{
 
     @Override
     public void tick() {
+        this.currAni.tick();
         // moving player depending on flags
         if (game.getKeyManager().up) {
+            setCurr(animationUp);
            setY(getY() - 1);
         }
-        if (game.getKeyManager().right) {
+        else if (game.getKeyManager().right) {
+            setCurr(animationRight);
            setX(getX() + 1);
         }
-        if (game.getKeyManager().down) {
+        else if (game.getKeyManager().down) {
+            setCurr(animationDown);
            setY(getY() + 1);
         }
-        if (game.getKeyManager().left) {
+        else if (game.getKeyManager().left) {
+            setCurr(animationLeft);
            setX(getX() - 1);
+        }else{
+           setCurr(animationStill);
         }
         // reset x position and y position if it goes out of the border
         if (getX() + 60 >= game.getWidth()) {
@@ -107,6 +131,6 @@ public class Player extends Item{
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(Assets.player, getX(), getY(), getWidth(), getHeight(), null);
+        g.drawImage(currAni.getCurrentFrame(), getX(), getY(), getWidth(), getHeight(), null);
     }
 }
