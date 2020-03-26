@@ -29,6 +29,7 @@ public class Game implements Runnable {
     private int height;             // height of the window
     private Thread thread;          // thread to create the game
     private boolean running;        // to set the game
+    private boolean hasSaved;       // to check if the game has been saved
     private Player player;          // to use a player
     private KeyManager keyManager;  // to manage the keyboard
     private LinkedList<Enemy> lista; // to store a random amount of enemies
@@ -234,13 +235,14 @@ public class Game implements Runnable {
          // ticks keyMangaer
          keyManager.tick();
          
-        if (keyManager.load){
+        if (keyManager.load && hasSaved){
             keyManager.load = false;
             load();
         }
         
         if (keyManager.save){
             keyManager.save = false;
+            hasSaved = true;
             save();
                     
         }

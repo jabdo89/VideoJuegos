@@ -45,7 +45,7 @@ public class KeyManager implements KeyListener {
             p = !p;
             }
          
-         if (e.getKeyCode() == KeyEvent.VK_L){
+         if (e.getKeyCode() == KeyEvent.VK_C){
             load = !load;
             }
          
