@@ -31,7 +31,6 @@ public class Game implements Runnable {
     private boolean running;        // to set the game
     private Player player;          // to use a player
     private KeyManager keyManager;  // to manage the keyboard
-    private ReadandWrite readAndWrite; // to save and load
     private LinkedList<Enemy> lista; // to store a random amount of enemies
     private LinkedList<Helper> listaHelp; // to store a random amount of helpers
     private int score; // To keep track of the game score
