@@ -19,6 +19,8 @@ public class KeyManager implements KeyListener {
     public boolean left;    // flag to move left the player
     public boolean down;   // flag to move down the player
     public boolean p; //flag to pause
+    public boolean load; //flag to load
+    public boolean save; //flag to save
     private boolean keys[];  // to store all the flags for every key
     
     public KeyManager() {
@@ -41,6 +43,14 @@ public class KeyManager implements KeyListener {
         keys[e.getKeyCode()] = false;
          if (e.getKeyCode() == KeyEvent.VK_P){
             p = !p;
+            }
+         
+         if (e.getKeyCode() == KeyEvent.VK_L){
+            load = !load;
+            }
+         
+         if (e.getKeyCode() == KeyEvent.VK_G){
+            save = !save;
             }
     }
     
